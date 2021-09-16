@@ -87,8 +87,9 @@ class PostController extends Controller
     public function edit($id)
     {
         $categories = Category::all();
+        $tags = Tag::all();
         $post = Post::find($id);
-        return view('admin.posts.edit', compact('post', 'categories'));
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -108,6 +109,10 @@ class PostController extends Controller
         $data=$request->all();
 
         $post->update($data);
+
+        if(array_key_exists('tags', $data)){
+            $post->tags()->sync($data['tags']);
+        }
         return redirect()->route('admin.posts.index');
     }
 

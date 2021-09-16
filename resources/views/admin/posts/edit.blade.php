@@ -22,9 +22,17 @@
             </option>
                 
             @endforeach
-            
-
         </select>
+        <label for="">lettura:</label>
+          @foreach ($tags as $tag)
+              <input type="checkbox" name="tags[]" id="tag{{$loop->iteration}}"value="{{$tag->id}}"
+              @if(!errors->any() && $post->tags->contains($tag->id)) checked
+              @elseif(in_array($tag->id, old('tags',[]))) checked
+              @endif
+              
+              >
+              <label for="tag{{$loop->iteration}}">{{$tag->name}}</label>
+          @endforeach
          
         </div>
         <button type="submit" class="btn btn-primary">crea</button>

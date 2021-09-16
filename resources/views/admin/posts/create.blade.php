@@ -23,7 +23,10 @@
           </select>
           <label for="">lettura:</label>
           @foreach ($tags as $tag)
-              <input type="checkbox" name="tags[]" id="tag{{$loop->iteration}}"value="{{$tag->id}}">
+              <input type="checkbox" name="tags[]" id="tag{{$loop->iteration}}"value="{{$tag->id}}"
+              @if(in_array($tag->id, old('tags', []))) checked
+              @endif
+              >
               <label for="tag{{$loop->iteration}}">{{$tag->name}}</label>
           @endforeach
         </div>
