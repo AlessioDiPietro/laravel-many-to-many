@@ -16,4 +16,8 @@ class Post extends Model
     public function category(){
         return $this->belogsTo('App\Category');
     }
+    
+    public function tags(){
+        return $this->belogsTo('App\Tag');
+    }
 }
