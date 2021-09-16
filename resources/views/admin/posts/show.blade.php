@@ -14,6 +14,18 @@
         @if ($post->category)
         <p><strong>{{$post->category->name}}</strong></p>
         @endif
+
+        <div class="form-controll">
+            <label for="">Lettura:</label>
+            @forelse ($post->tags as $tag)
+            <span class="badge">{{$tag->name}}</span>
+                
+            @empty
+                <span> 0 Tags segnati.</span>
+                
+            @endforelse
+
+        </div>
         <a href="{{route('admin.posts.index')}}" class="btn btn-primary">indietro</a>
 
 

@@ -74,7 +74,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {   
-        
+        $tags = Tag::all();
         return view('admin.posts.show', compact('post'));
     }
 
