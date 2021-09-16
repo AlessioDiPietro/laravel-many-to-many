@@ -12,7 +12,7 @@
           <label for="descrizione" class="form-label">articolo</label>
           <textarea name="article" id="descrizione" cols="30" rows="10" class="form-control"></textarea>
           <label for="cat" class="form-label">categoria</label>
-          <select name="category_id" id="cat">
+          <select name="category_id" id="cat" class="form-control">
             <option value="">Seleziona una categoria</option>
             @foreach ($categories as $category)
               <option value="{{$category->id}}"
@@ -21,6 +21,11 @@
                 >{{$category->name}}</option>
             @endforeach
           </select>
+          <label for="">lettura:</label>
+          @foreach ($tags as $tag)
+              <input type="checkbox" name="tags[]" id="tag{{$loop->iteration}}"value="{{$tag->id}}">
+              <label for="tag{{$loop->iteration}}">{{$tag->name}}</label>
+          @endforeach
         </div>
         <button type="submit" class="btn btn-primary">crea</button>
       </form>

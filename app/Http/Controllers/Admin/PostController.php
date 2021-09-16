@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Post;
 use App\Category;
+use App\Tag;
 
 class PostController extends Controller
 {
@@ -29,7 +30,8 @@ class PostController extends Controller
     public function create()
     {   
         $categories = Category::all();
-        return view('admin.posts.create', compact('categories'));
+        $tags = Tag::all();
+        return view('admin.posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -46,10 +48,21 @@ class PostController extends Controller
             'article'=> 'required'
         ]);
         $data = $request->all();
+
+        $slug =  Str::slug($data['title'], ' || ');
+        //Cerca se esiste già un post con questo slug
+
+
         $new_post = new Post();
-        $new_post->slug = Str::slug($data['title'], ' || ');
+        $new_post->slug = $slug;
         $new_post->fill($data);
         $new_post->save();
+
+        if(array_key_exists('tags',$data)){
+
+            $new_post->tags()->attach($data['tags']);
+        }
+
         return redirect()->route('admin.posts.index');
     }
 
@@ -60,7 +73,8 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Post $post)
-    {
+    {   
+        
         return view('admin.posts.show', compact('post'));
     }
 
@@ -90,7 +104,9 @@ class PostController extends Controller
             'title'=> 'required',
             'article'=> 'required'
         ]);
+
         $data=$request->all();
+
         $post->update($data);
         return redirect()->route('admin.posts.index');
     }
@@ -104,6 +120,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-        return redirect()->Route('admin.posts.index');
+        $post->tags()->detach();
+        return redirect()->route('admin.posts.index');
     }
 }
